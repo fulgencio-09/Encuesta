@@ -13,6 +13,7 @@ class SurveyResponse extends Model
 
     protected $fillable = [
         'survey_id',
+        'reporting_quarter_id',
         'respondent_name',
         'document_type',
         'document_number',
@@ -44,6 +45,11 @@ class SurveyResponse extends Model
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);
+    }
+
+    public function reportingQuarter(): BelongsTo
+    {
+        return $this->belongsTo(ReportingQuarter::class);
     }
 
     public function answers(): HasMany
