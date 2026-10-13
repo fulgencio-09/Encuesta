@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $survey = Survey::with(['questions.options', 'questions.items'])->where('slug', 'satisfaccion-usuario-2025')->firstOrFail();
+        $survey = Survey::with(['questions.options', 'questions.items'])->where('slug', 'satisfaccion-usuario')->firstOrFail();
         $quarters = ReportingQuarter::where('is_active', true)->orderByDesc('year')->orderByDesc('quarter')->get();
         $selectedQuarter = $request->filled('quarter_id')
             ? $quarters->firstWhere('id', (int) $request->quarter_id)
