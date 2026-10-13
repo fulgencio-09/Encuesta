@@ -42,7 +42,24 @@
                 <div class="field"><label>Nombres y Apellidos</label><input class="input" type="text" name="respondent_name" value="{{ old('respondent_name') }}"></div>
                 <div class="field"><label>Tipo de documento</label><select name="document_type"><option value="">Seleccione</option>@foreach(['T.I','C.C','Tarjeta de Extranjería','Cédula de Extranjería'] as $v)<option value="{{ $v }}" @selected(old('document_type')===$v)>{{ $v }}</option>@endforeach</select></div>
                 <div class="field"><label>Número del Documento</label><input class="input" type="text" name="document_number" value="{{ old('document_number') }}"></div>
-                <div class="field"><label>Centro de Atención</label><input class="input" type="text" name="care_center" value="{{ old('care_center') }}"></div>
+                <div class="field">
+                    <label>Centro de Atención</label>
+                    <select name="care_center" class="input">
+                        <option value="">Seleccione el centro de atención</option>
+                        @foreach([
+                            'Hospital Santa Teresa de Jesús de Ávila',
+                            'Puesto de Salud Mingueo',
+                            'Puesto de Salud Palomino',
+                            'Puesto de Salud Rio Ancho',
+                            'Puesto de Salud La Punta de los Remedios',
+                            'Puesto de Salud Las Flores',
+                            'Puesto de Salud Campana',
+                            'Cooquemolos'
+                        ] as $v)
+                            <option value="{{ $v }}" @selected(old('care_center')===$v)>{{ $v }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="field"><label>Fecha</label><input class="input" type="date" name="response_date" value="{{ old('response_date', now()->toDateString()) }}"></div>
                 <div class="field"><label>Género</label><select name="gender"><option value="">Seleccione</option>@foreach(['Masculino','Femenino','LGTBIQ+'] as $v)<option value="{{ $v }}" @selected(old('gender')===$v)>{{ $v }}</option>@endforeach</select></div>
                 <div class="field"><label>Embarazo</label><select name="pregnancy"><option value="">Seleccione</option>@foreach(['Sí','No','No Aplica'] as $v)<option value="{{ $v }}" @selected(old('pregnancy')===$v)>{{ $v }}</option>@endforeach</select></div>
