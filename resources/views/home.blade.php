@@ -8,8 +8,13 @@
 <div class="dashboard">
     <div class="hero">
         <h1>Dashboard de Satisfacción</h1>
-        <div>{{ $survey->name }}</div>
-        @if($selectedQuarter)<div style="margin-top:8px;opacity:.9">Periodo seleccionado: <strong>{{ $selectedQuarter->name }}</strong></div>@else<div style="margin-top:8px;opacity:.9">Seleccione un periodo para consultar resultados.</div>@endif
+        @if($selectedQuarter)
+            <div style="font-size:20px;font-weight:700;margin-top:4px">ENCUESTA DE SATISFACCIÓN DEL USUARIO {{ $selectedQuarter->year }}</div>
+            <div style="margin-top:8px;opacity:.9">Periodo seleccionado: <strong>{{ $selectedQuarter->name }}</strong></div>
+        @else
+            <div style="font-size:20px;font-weight:700;margin-top:4px">ENCUESTA DE SATISFACCIÓN DEL USUARIO</div>
+            <div style="margin-top:8px;opacity:.9">No hay un trimestre activo seleccionado.</div>
+        @endif
         <div class="menu">
             <a class="btn light" href="{{ route('admin.quarters.index') }}">⚙ Parametrizar trimestres</a>
             <a class="btn light" href="{{ route('admin.surveys.results', $survey->slug) }}">📊 Ver resultados detallados</a>
