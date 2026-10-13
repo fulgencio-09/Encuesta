@@ -1,0 +1,1 @@
+@extends('layouts.app') @section('content')<div class="card"><h1>Bienvenido a Encuesta</h1><p class="muted">Has iniciado sesión correctamente.</p><h2>Panel inicial</h2><p>Desde aquí construiremos la gestión de encuestas, preguntas, respuestas, usuarios y reportes.</p></div>@endsection
