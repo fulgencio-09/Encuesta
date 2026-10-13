@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReportingQuarter;
 use App\Models\Survey;
 use App\Models\SurveyResponse;
 use Illuminate\Http\Request;
@@ -18,17 +19,35 @@ class SurveyController extends Controller
             'questions.items' => fn ($query) => $query->where('is_active', true)->orderBy('position'),
         ])->where('slug', $slug)->where('is_active', true)->firstOrFail();
 
+        $activeQuarter = ReportingQuarter::where('is_active', true)
+            ->orderByDesc('year')
+            ->orderByDesc('quarter')
+            ->first();
+
+        if (!$activeQuarter) {
+            return response()->view('surveys.unavailable', compact('survey'), 503);
+        }
+
         if ($survey->closed_at && now()->greaterThan($survey->closed_at)) {
             abort(404);
         }
 
-        return view('surveys.show', compact('survey'));
+        return view('surveys.show', compact('survey', 'activeQuarter'));
     }
 
     public function store(Request $request, string $slug)
     {
         $survey = Survey::with(['questions.options', 'questions.items'])
             ->where('slug', $slug)->where('is_active', true)->firstOrFail();
+
+        $activeQuarter = ReportingQuarter::where('is_active', true)
+            ->orderByDesc('year')
+            ->orderByDesc('quarter')
+            ->first();
+
+        if (!$activeQuarter) {
+            return response()->view('surveys.unavailable', compact('survey'), 503);
+        }
 
         if ($survey->closed_at && now()->greaterThan($survey->closed_at)) {
             abort(404);
@@ -74,9 +93,10 @@ class SurveyController extends Controller
             'array' => 'Complete las opciones solicitadas.',
         ]);
 
-        DB::transaction(function () use ($request, $validated, $survey) {
+        DB::transaction(function () use ($request, $validated, $survey, $activeQuarter) {
             $response = SurveyResponse::create([
                 'survey_id' => $survey->id,
+                'reporting_quarter_id' => $activeQuarter->id,
                 'respondent_name' => $validated['respondent_name'] ?? null,
                 'document_type' => $validated['document_type'] ?? null,
                 'document_number' => $validated['document_number'] ?? null,
