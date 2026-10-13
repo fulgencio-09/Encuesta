@@ -2,11 +2,14 @@
 
 @section('content')
 <style>
-    .wrap{max-width:1100px;margin:0 auto}.card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.06);margin-bottom:20px}.grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}.field input,.field select{width:100%;padding:11px;border:1px solid #d7dde3;border-radius:8px}.btn{border:0;border-radius:8px;padding:11px 16px;cursor:pointer;font-weight:700}.primary{background:#176b87;color:#fff}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}.status{font-weight:700}.active{color:#16803c}.inactive{color:#b42318}.small{font-size:13px;color:#667085}.alert{padding:12px;border-radius:8px;background:#eaf7ee;color:#176b3a;margin-bottom:15px}@media(max-width:700px){.grid{grid-template-columns:1fr}.table{font-size:13px}}
+    .wrap{max-width:1100px;margin:0 auto}.card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.06);margin-bottom:20px}.grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:center}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}.field input,.field select{width:100%;padding:11px;border:1px solid #d7dde3;border-radius:8px;height:44px}.btn{border:0;border-radius:8px;padding:11px 16px;cursor:pointer;font-weight:700;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;height:44px}.primary{background:#176b87;color:#fff}.secondary{background:#eef2f5;color:#344054;border:1px solid #d7dde3}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}.status{font-weight:700}.active{color:#16803c}.inactive{color:#b42318}.small{font-size:13px;color:#667085}.alert{padding:12px;border-radius:8px;background:#eaf7ee;color:#176b3a;margin-bottom:15px}.header-actions{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:8px}.header-actions h1{margin:0}@media(max-width:700px){.grid{grid-template-columns:1fr}.table{font-size:13px}.header-actions{align-items:flex-start;flex-direction:column}.header-actions .btn{width:100%}}
 </style>
 <div class="wrap">
     <div class="card">
-        <h1 style="margin-top:0">Parametrización de trimestres</h1>
+        <div class="header-actions">
+            <h1>Parametrización de trimestres</h1>
+            <a href="{{ route('home') }}" class="btn secondary">← Regresar al Dashboard</a>
+        </div>
         <p class="small">Cree los periodos que estarán disponibles para consultar en el Dashboard. Los trimestres inactivos no se mostrarán como periodos disponibles.</p>
         @if(session('success'))<div class="alert">{{ session('success') }}</div>@endif
         @if($errors->any())<div class="alert" style="background:#fff1f0;color:#b42318">{{ $errors->first() }}</div>@endif
