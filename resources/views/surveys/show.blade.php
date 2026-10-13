@@ -53,8 +53,7 @@
                             'Puesto de Salud Rio Ancho',
                             'Puesto de Salud La Punta de los Remedios',
                             'Puesto de Salud Las Flores',
-                            'Puesto de Salud Campana',
-                            'Cooquemolos'
+                            'Puesto de Salud Campana'
                         ] as $v)
                             <option value="{{ $v }}" @selected(old('care_center')===$v)>{{ $v }}</option>
                         @endforeach
