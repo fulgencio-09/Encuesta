@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminSurveyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SurveyController;
@@ -21,4 +22,5 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/admin/encuestas/{slug}/resultados', [AdminSurveyController::class, 'results'])->name('admin.surveys.results');
 });
