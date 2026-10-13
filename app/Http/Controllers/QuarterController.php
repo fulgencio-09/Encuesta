@@ -11,7 +11,11 @@ class QuarterController extends Controller
 {
     public function index()
     {
-        $quarters = ReportingQuarter::orderByDesc('year')->orderBy('quarter')->get();
+        $quarters = ReportingQuarter::orderByDesc('year')
+            ->orderBy('quarter')
+            ->paginate(10)
+            ->withQueryString();
+
         return view('admin.quarters.index', compact('quarters'));
     }
 
@@ -39,7 +43,6 @@ class QuarterController extends Controller
         [$start, $end, $label] = $ranges[$data['quarter']];
 
         DB::transaction(function () use ($data, $start, $end, $label) {
-            // Solo puede existir un trimestre activo para determinar qué encuesta está disponible.
             ReportingQuarter::where('is_active', true)->update(['is_active' => false]);
 
             ReportingQuarter::create([
