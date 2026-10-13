@@ -18,14 +18,15 @@
         <div class="menu">
             <a class="btn light" href="{{ route('admin.quarters.index') }}">⚙ Parametrizar trimestres</a>
             <a class="btn light" href="{{ route('admin.surveys.results', $survey->slug) }}">📊 Ver resultados detallados</a>
+            <a class="btn light" href="{{ route('admin.reports.index') }}">📄 Informes y PDF</a>
         </div>
     </div>
 
     <form method="GET" class="filters">
         <h3 style="margin-top:0">Periodo de consulta</h3>
         <div class="filters-grid">
-            <div class="field"><label>Trimestre activo</label><select name="quarter_id"><option value="">Todos / seleccionar año</option>@foreach($quarters as $quarter)<option value="{{ $quarter->id }}" @selected($selectedQuarter?->id === $quarter->id)>{{ $quarter->name }}</option>@endforeach</select></div>
-            <div class="field"><label>Año</label><select name="year"><option value="">Todos</option>@foreach($years as $year)<option value="{{ $year }}">{{ $year }}</option>@endforeach</select></div>
+            <div class="field"><label>Trimestre</label><select name="quarter_id"><option value="">Todos / seleccionar año</option>@foreach($quarters as $quarter)<option value="{{ $quarter->id }}" @selected($selectedQuarter?->id === $quarter->id)>{{ $quarter->name }}</option>@endforeach</select></div>
+            <div class="field"><label>Año</label><select name="year"><option value="">Todos</option>@foreach($years as $year)<option value="{{ $year }}" @selected(request('year') == $year)>{{ $year }}</option>@endforeach</select></div>
             <button class="btn primary" type="submit">Aplicar periodo</button>
         </div>
     </form>
