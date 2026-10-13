@@ -8,7 +8,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#f3f6f8;color:#111827}.wra
 </style></head><body><div class="wrap">
 <div class="head"><h1>Matriz estadística de satisfacción</h1><p><strong>Periodo:</strong> {{ $periodLabel }}</p><p class="note">La matriz presenta cantidades de respuestas por mes y por opción. Las preguntas de selección se muestran como bloques independientes y la matriz de servicios se presenta al final.</p><div class="actions"><a class="btn" href="{{ route('admin.reports.index', request()->query()) }}">← Regresar a informes</a><a class="btn light" href="{{ route('admin.reports.pdf', request()->query()) }}">Descargar PDF</a></div></div>
 
-@foreach($questions->where('type','!=','matrix') as $question)
+@foreach($questions->whereIn('type',['single_choice','scale']) as $question)
 <div class="table-wrap"><h2>{{ $question->position }}. {{ $question->question_text }}</h2><table><thead><tr><th>Mes</th><th>Total</th>@foreach($question->options as $option)<th>{{ $option->label }}</th>@endforeach</tr></thead><tbody>@foreach($monthly as $row)<tr><td>{{ $row['month'] }}</td><td>{{ $row['total'] }}</td>@foreach($question->options as $option)<td>{{ $row['questions'][$question->question_key][$option->value] ?? 0 }}</td>@endforeach</tr>@endforeach<tr class="subhead"><td>TOTAL</td><td>{{ $responses->count() }}</td>@foreach($question->options as $option)<td>{{ $questionStats->firstWhere('question.id',$question->id)['options']->firstWhere('label',$option->label)['count'] ?? 0 }}</td>@endforeach</tr></tbody></table></div>
 @endforeach
 
