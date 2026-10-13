@@ -1,1 +1,31 @@
-@extends('layouts.app') @section('content')<div class="card" style="max-width:460px;margin:auto"><h1>Iniciar sesión</h1><p class="muted">Accede a la plataforma de Encuestas.</p><form method="POST" action="{{ route('login.store') }}">@csrf<div class="field"><label>Correo electrónico</label><input class="input" type="email" name="email" value="{{ old('email') }}" required autofocus>@error('email')<div class="error">{{ $message }}</div>@enderror</div><div class="field"><label>Contraseña</label><input class="input" type="password" name="password" required>@error('password')<div class="error">{{ $message }}</div>@enderror</div><div class="field"><label><input type="checkbox" name="remember"> Recordarme</label></div><button class="btn" type="submit">Ingresar</button></form><p style="margin-top:20px">¿No tienes cuenta? <a href="{{ route('register') }}">Crear cuenta</a></p></div>@endsection
+@extends('layouts.app')
+
+@section('content')
+<div class="card" style="max-width:460px;margin:auto">
+    <h1>Iniciar sesión</h1>
+    <p class="muted">Accede a la plataforma de Encuestas.</p>
+
+    <form method="POST" action="{{ route('login.store') }}">
+        @csrf
+        <div class="field">
+            <label>Correo electrónico</label>
+            <input class="input" type="email" name="email" value="{{ old('email') }}" required autofocus>
+            @error('email')<div class="error">{{ $message }}</div>@enderror
+        </div>
+
+        <div class="field">
+            <label>Contraseña</label>
+            <input class="input" type="password" name="password" required>
+            @error('password')<div class="error">{{ $message }}</div>@enderror
+        </div>
+
+        <div class="field">
+            <label><input type="checkbox" name="remember"> Recordarme</label>
+        </div>
+
+        <button class="btn" type="submit">Ingresar</button>
+    </form>
+
+    <p class="muted" style="margin-top:20px">Acceso administrativo restringido al usuario autorizado.</p>
+</div>
+@endsection
