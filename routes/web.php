@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\AdminSurveyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/admin/encuestas/{slug}/resultados', [AdminSurveyController::class, 'results'])->name('admin.surveys.results');
+
+    Route::get('/admin/informes', [AdminReportController::class, 'index'])->name('admin.reports.index');
+    Route::get('/admin/informes/matriz', [AdminReportController::class, 'matrix'])->name('admin.reports.matrix');
+    Route::get('/admin/informes/pdf', [AdminReportController::class, 'pdf'])->name('admin.reports.pdf');
 
     Route::get('/admin/trimestres', [QuarterController::class, 'index'])->name('admin.quarters.index');
     Route::post('/admin/trimestres', [QuarterController::class, 'store'])->name('admin.quarters.store');
