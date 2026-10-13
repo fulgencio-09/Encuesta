@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
             ['email' => env('ADMIN_EMAIL', 'admin@encuesta.com')],
             [
                 'name' => env('ADMIN_NAME', 'Administrador'),
-                'password' => env('ADMIN_PASSWORD'),
+                'password' => env('ADMIN_PASSWORD', 'Admin123*'),
                 'email_verified_at' => now(),
             ]
         );
