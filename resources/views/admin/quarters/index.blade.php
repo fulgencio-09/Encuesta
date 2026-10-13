@@ -17,7 +17,7 @@
             @csrf
             <div class="field"><label>Año</label><input type="number" name="year" min="2000" max="2100" value="{{ old('year', now()->year) }}" required></div>
             <div class="field"><label>Trimestre</label><select name="quarter" required><option value="1">Primer Trimestre (enero - marzo)</option><option value="2">Segundo Trimestre (abril - junio)</option><option value="3">Tercer Trimestre (julio - septiembre)</option><option value="4">Cuarto Trimestre (octubre - diciembre)</option></select></div>
-            <button class="btn primary" type="submit">Crear trimestre</button>
+            <div class="create-action"><button class="btn primary" type="submit">Crear trimestre</button></div>
         </form>
     </div>
 
