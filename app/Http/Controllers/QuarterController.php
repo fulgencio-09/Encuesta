@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ReportingQuarter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class QuarterController extends Controller
@@ -18,7 +19,14 @@ class QuarterController extends Controller
     {
         $data = $request->validate([
             'year' => ['required', 'integer', 'min:2000', 'max:2100'],
-            'quarter' => ['required', 'integer', Rule::in([1, 2, 3, 4])],
+            'quarter' => [
+                'required',
+                'integer',
+                Rule::in([1, 2, 3, 4]),
+                Rule::unique('reporting_quarters')->where(fn ($query) => $query->where('year', $request->integer('year'))),
+            ],
+        ], [
+            'quarter.unique' => 'Ese trimestre ya existe para el año seleccionado.',
         ]);
 
         $ranges = [
@@ -30,21 +38,35 @@ class QuarterController extends Controller
 
         [$start, $end, $label] = $ranges[$data['quarter']];
 
-        ReportingQuarter::create([
-            'year' => $data['year'],
-            'quarter' => $data['quarter'],
-            'name' => $label . ' ' . $data['year'],
-            'start_date' => $data['year'] . '-' . $start,
-            'end_date' => $data['year'] . '-' . $end,
-            'is_active' => true,
-        ]);
+        DB::transaction(function () use ($data, $start, $end, $label) {
+            // Solo puede existir un trimestre activo para determinar qué encuesta está disponible.
+            ReportingQuarter::where('is_active', true)->update(['is_active' => false]);
 
-        return back()->with('success', 'Trimestre creado correctamente.');
+            ReportingQuarter::create([
+                'year' => $data['year'],
+                'quarter' => $data['quarter'],
+                'name' => $label . ' ' . $data['year'],
+                'start_date' => $data['year'] . '-' . $start,
+                'end_date' => $data['year'] . '-' . $end,
+                'is_active' => true,
+            ]);
+        });
+
+        return back()->with('success', 'Trimestre creado correctamente y establecido como trimestre activo.');
     }
 
     public function toggle(ReportingQuarter $quarter)
     {
-        $quarter->update(['is_active' => !$quarter->is_active]);
-        return back()->with('success', $quarter->is_active ? 'Trimestre activado.' : 'Trimestre desactivado.');
+        if ($quarter->is_active) {
+            $quarter->update(['is_active' => false]);
+            return back()->with('success', 'Trimestre desactivado. La encuesta pública queda temporalmente no disponible.');
+        }
+
+        DB::transaction(function () use ($quarter) {
+            ReportingQuarter::where('is_active', true)->update(['is_active' => false]);
+            $quarter->update(['is_active' => true]);
+        });
+
+        return back()->with('success', 'Trimestre activado. La encuesta pública queda asociada a este período.');
     }
 }
